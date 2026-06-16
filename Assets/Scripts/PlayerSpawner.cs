@@ -12,8 +12,13 @@ public class PlayerSpawner : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom)
         {
-            var spawnPosition = spawnPositions[Random.Range(0, spawnPositions.Length)];
-            PhotonNetwork.Instantiate(player.name, spawnPosition.position, spawnPosition.rotation);
+           SpawnPlayer();
         }
+    }
+
+    public void SpawnPlayer()
+    {
+        var spawnPosition = spawnPositions[Random.Range(0, spawnPositions.Length)];
+        PhotonNetwork.Instantiate(player.name, spawnPosition.position, spawnPosition.rotation);
     }
 }

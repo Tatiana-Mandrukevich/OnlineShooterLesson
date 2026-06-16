@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         }
         else
         {
-            playerCamera.gameObject.SetActive(false);
+            playerCamera.GetComponent<Camera>().enabled = false;
         }
     }
 
