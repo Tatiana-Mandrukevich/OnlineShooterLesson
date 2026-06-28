@@ -6,14 +6,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 {
+    [SerializeField] private WeaponAnimation _weaponAnimation;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float jumpPower;
     [SerializeField] private float gravity;
-
     [SerializeField] private Transform playerCamera;
     [SerializeField] private float mouseSensitivity;
-
     [SerializeField] private float smoothTimeForPun = 0.1f;
 
     private CharacterController controller;
@@ -52,7 +51,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         else
         {
             transform.position = Vector3.Lerp(transform.position, currentPosition, Time.deltaTime * smoothTimeForPun);
-            transform.rotation = Quaternion.Lerp(transform.rotation, currentRotation, Time.deltaTime * smoothTimeForPun);
+            transform.rotation =
+                Quaternion.Lerp(transform.rotation, currentRotation, Time.deltaTime * smoothTimeForPun);
         }
     }
 
@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             currentRotation = (Quaternion)stream.ReceiveNext();
         }
     }
-    
+
     private void LookAround()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
         float y = Input.GetAxis("Vertical");
         Vector3 move = transform.right * x + transform.forward * y;
         float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : moveSpeed;
+        _weaponAnimation.SetWalk(x != 0 || y != 0);
+        _weaponAnimation.SetRun(Input.GetKey(KeyCode.LeftShift));
         controller.Move(move * speed * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
